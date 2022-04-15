@@ -5,11 +5,17 @@
 #include <string>
 using namespace std;
 
+/**
+Create the DB and load the default .txt file using the private readFile function.
+*/
 CropDB::CropDB(){
     numCrops = 0;
     readFile("cropTiny.txt");
 }
 
+/**
+Ask the user to specify a db name, and then load the data using the private function
+*/
 void CropDB::reload(){
     char filename[100];
     cout << "Enter the crop input filename: ";
@@ -17,6 +23,9 @@ void CropDB::reload(){
     readFile(filename);
 }
 
+/**
+Get the name of the file and then write the data out to file.
+*/
 void CropDB::printToFile(){
     string filename;
     cout << "Enter the crop output filename: ";
@@ -27,6 +36,10 @@ void CropDB::printToFile(){
     }
 }
 
+/**
+Insert a new entry at an index specified by the user.
+The values will be read from the console.
+*/
 void CropDB::insert(){
     if (numCrops < MAX_CROPS) {
         int insertIndex = getValidIndex();
@@ -41,6 +54,11 @@ void CropDB::insert(){
     }
     
 }
+
+/**
+Add a new entry at the end of the current array.
+The values will be read from the console.
+*/
 void CropDB::add(){
     if (numCrops < MAX_CROPS) {
         crops[numCrops].readFromUser();
@@ -50,6 +68,11 @@ void CropDB::add(){
         cout << "Database is full" << endl;
     }
 }
+
+/**
+Get an index from the user. Then collapse the array so that 
+the array loses the index specified.
+*/
 void CropDB::remove(){
     if (numCrops > 0) {
         int delIndex = getValidIndex();
@@ -62,16 +85,31 @@ void CropDB::remove(){
         cout << "Database is empty" << endl;
     }
 }
+
+/**
+Print all the crop info with ids between the values specified by
+the user.
+*/
 void CropDB::search(){
     double min = readDouble("Enter the min crop code to find: ");
     double max = readDouble("Enter the max crop code to find: ");
     print(true, min, max);
 }
 
+/**
+Print all the entries.
+*/
 void CropDB::print() {
     print(false, 0, 0);
 }
+
+/**
+Print a menu with the things the user is allowed to do with this database.
+If we add new functions, we'll expand this function so that the user is presented
+with new options.
+*/
 void CropDB::dbMenu(){
+    // This will let us use meaningful names in the switch.
     enum MenuOptions{
         PRINT = 1, // enum will automatically add 1 to the values that follow
         SAVE_TO_FILE,
@@ -82,6 +120,7 @@ void CropDB::dbMenu(){
         RELOAD,
         QUIT,
     };
+    // cstrings we will print as menu options.
     const char *options[] = {
         "Print DB",
         "Save DB to file",
@@ -93,8 +132,12 @@ void CropDB::dbMenu(){
         "Quit"
     };
 
+    // Spin here until the user enters the QUIT value.
     int option = -1;
     while(option != QUIT) {
+        // Print the menu options (we use index - 1) because 
+        // the first option is 1, but the first entry in the array
+        // is at index 0.
         for (int index = PRINT; index <= QUIT; index++) {
             cout << index << ") " << options[index - 1] << endl;
         }
@@ -162,7 +205,8 @@ void CropDB::print(bool searchRange, double min, double max) {
 }
 
 /**
-Loads the crop info from the file specified    
+Loads the crop info from the file specified. 
+Used in the constructor and reload functions.
 */
 void CropDB::readFile(const char fileName[]) {
     ifstream file(fileName);

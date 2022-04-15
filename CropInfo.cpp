@@ -2,6 +2,9 @@
 #include "ReadUtils.h"
 #include <iostream>
 using namespace std;
+/**
+Clear all the values to zero.
+*/
 CropInfo::CropInfo(){
     cropCode = 0;
     for (int index = 0; index < MAX_NAME_LEN; index++) {
@@ -11,7 +14,9 @@ CropInfo::CropInfo(){
         yieldsByYear[index] = 0;
     }
 }
-
+/**
+Loads the information from the file specified
+*/
 void CropInfo::readFromFile(istream &file) {
     file >> cropCode;
     file.ignore(100, ';');
@@ -24,6 +29,10 @@ void CropInfo::readFromFile(istream &file) {
         }
     }
 }
+/**
+Very similar to readFromFile, but we are prompting the user
+for the values.
+*/
 void CropInfo::readFromUser(){
     cropCode = readDouble("Enter the crop code: ");
     cin.ignore(100, '\n');
@@ -35,6 +44,9 @@ void CropInfo::readFromUser(){
         yieldsByYear[index] = readDouble("");
     }
 }
+/**
+Print the data to a file or the screen depending on the value in out.
+*/
 void CropInfo::print(ostream &out){
     out << cropCode << ";";
     out << name;
@@ -45,7 +57,9 @@ void CropInfo::print(ostream &out){
     out << endl; // The last entry does not have a ';' instead it ends with a \n
 }
 
-// Returns whether the cropCode is between the two values passed in.
+/**
+ Returns true if the cropCode is between the two values passed in, false otherwise.
+*/
 bool CropInfo::codeIsBetween(double lowerBound, double upperBound){
     return (cropCode >= lowerBound && cropCode <= upperBound);
 }
