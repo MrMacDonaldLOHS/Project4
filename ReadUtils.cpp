@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 #include "ReadUtils.h"
 using namespace std;
 
@@ -41,4 +42,19 @@ bool readBool(const char prompt[]){
     }
     return temp == 'Y';
 }
+char *createCharPtr(const char otherString[]) {
+    char *ptr = nullptr;
+    // We add 1 because of the \0 at the end of the string
+    int sizeNeeded = strlen(otherString) + 1;
+    
+    ptr = new char[sizeNeeded];
+    // After we allocate it, we can treat like a regular array.
+    strcpy(ptr, otherString);
+    return ptr;
+}
 
+char *readCString(istream &in, char delimeter) {
+    char temp[1000];
+    in.getline(temp, 1000, delimeter);
+    return createCharPtr(temp);
+}
